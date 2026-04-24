@@ -15,12 +15,10 @@ class Solution:
             for i in range(len(nums)):
                 if i in used:
                     continue # index was used before
-                nextIdx = i +1
-                currIdx = i
-                if nextIdx <= len(nums)-1:
-                    if nums[nextIdx] == nums[currIdx]:
-                        if nextIdx in used:
-                            continue
+                if i > 0:
+                    if nums[i-1] == nums[i]:
+                        if i-1 not in used:
+                            continue # skip duplicate start
                 curr.append(nums[i])
                 used.add(i)
                 gen(curr)

@@ -15,11 +15,11 @@ class Solution:
             for i in range(len(nums)):
                 if i in used:
                     continue # index was used before
-                nextIdx = i -1
+                nextIdx = i +1
                 currIdx = i
                 if nextIdx <= len(nums)-1:
                     if nums[nextIdx] == nums[currIdx]:
-                        if nextIdx in used:
+                        if nextIdx not in used:
                             continue
                 curr.append(nums[i])
                 used.add(i)

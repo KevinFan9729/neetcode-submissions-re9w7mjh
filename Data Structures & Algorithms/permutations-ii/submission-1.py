@@ -2,30 +2,25 @@ class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         # at each step we need to choose number into our result
         # I notice that the start of the permutation needs to be unique
-        # we should track used item with indices now
+        # we can use a hash map to track unqiue start
         # Time O(n!*n)
         # space O(n)
+        count = defaultdict(int)
+        for num in nums:
+            count[num] += 1
         res = []
-        used = set()
-        nums.sort()
-        def gen(curr):
+        def dfs(curr):
             if len(curr) == len(nums):
                 res.append(curr[:])
                 return
-            for i in range(len(nums)):
-                if i in used:
-                    continue # index was used before
-                nextIdx = i +1
-                currIdx = i
-                if nextIdx <= len(nums)-1:
-                    if nums[nextIdx] == nums[currIdx]:
-                        if nextIdx not in used:
-                            continue
-                curr.append(nums[i])
-                used.add(i)
-                gen(curr)
-                curr.pop()
-                used.remove(i)
-            return
-        gen([])
+
+            for num in count.keys():
+                if count[num] >0: # this means this num is is available
+                    curr.append(num)
+                    count[num] -= 1
+                    dfs(curr)
+                    count[num] += 1
+                    curr.pop()
+            
+        dfs([])
         return res

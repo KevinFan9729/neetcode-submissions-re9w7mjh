@@ -1,29 +1,26 @@
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-        # at each step we need to choose number into our result
-        # I notice that the start of the permutation needs to be unique
-        # we should track used item with indices now
+        # lest use a hashmap
         # Time O(n!*n)
-        # space O(n)
+        # Space O(n)
+        coutMap = defaultdict(int)
+
+        for num in nums:
+            coutMap[num] += 1
         res = []
-        used = set()
-        nums.sort()
-        def gen(curr):
+        curr = []
+        def gen():
             if len(curr) == len(nums):
                 res.append(curr[:])
                 return
-            for i in range(len(nums)):
-                if i in used:
-                    continue # index was used before
-                if i > 0:
-                    if nums[i-1] == nums[i]:
-                        if i-1 not in used:
-                            continue # skip duplicate start
-                curr.append(nums[i])
-                used.add(i)
-                gen(curr)
+            for num in coutMap.keys():
+                if coutMap[num] <= 0:
+                    continue
+                curr.append(num)
+                coutMap[num]-=1
+                gen()
+                coutMap[num]+=1
                 curr.pop()
-                used.remove(i)
-            return
-        gen([])
+
+        gen()
         return res
